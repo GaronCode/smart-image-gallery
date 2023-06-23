@@ -1,0 +1,181 @@
+@keyframes dev-galery-fade-left {
+    0% {
+        transform: translate(0%, 0);
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-100%, 0);
+        opacity: 0;
+    }
+}
+@keyframes dev-galery-fade-right {
+    0% {
+        transform: translate(0%, 0);
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(100%, 0);
+        opacity: 0;
+    }
+}
+@keyframes dev-galery-fade-in-right {
+    0% {
+        transform: translate(100%, 0);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0%, 0);
+        opacity: 1;
+    }
+}
+@keyframes dev-galery-fade-in-left {
+    0% {
+        transform: translate(-100%, 0);
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0%, 0);
+        opacity: 1;
+    }
+}
+.dev-galery-fade-left {
+    animation: dev-galery-fade-left .4s ease-out;
+}
+.dev-galery-fade-right {
+    animation: dev-galery-fade-right .4s ease-out;
+}
+.dev-galery-fade-in-right {
+    animation: dev-galery-fade-in-right .4s ease-out;
+}
+.dev-galery-fade-in-left {
+    animation: dev-galery-fade-in-left .4s ease-out;
+}
+
+#dev-galery__screen * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#dev-galery__screen {
+    --color-background-modal: rgba(240, 240, 240, 0.9);
+
+    --color-background-button: #003a72;
+    --color-background-button-hover: white;
+    --color-text-button:white;
+    --color-text-button-hover: #003a72;
+
+    --color-background-button-download: #007252; 
+    --color-text-button-download-hover: #007252;
+
+    --z-index: 10;
+    --border-radius-img: 20px;
+    --border-radius-button: 10%;
+
+    --button-size: 50px;
+    --button-gap: 10px;
+    --button-base-offset: 10px;
+}
+
+.dev-galery__screen_show {
+    opacity: 1 !important;
+}
+
+
+#dev-galery__screen {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: var(--color-background-modal);
+    z-index: var(--z-index);
+    text-align: center;
+    opacity: 0;
+    transition: opacity .2s linear;
+}
+
+
+#dev-galery__screen .dev-galery__image {
+    height: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center
+}
+
+#dev-galery__screen .dev-galery__image img {
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0px 0px 30px #8a8a8a;
+    margin: 0 auto;
+    border-radius: var(--border-radius-img);
+    user-select: none;
+
+}
+
+
+
+#dev-galery__screen .dev-galery__btn {
+    user-select: none;
+    border-radius: var(--border-radius-button);
+    width: var(--button-size);
+    height: var(--button-size);
+    text-align: center;
+    line-height: var(--button-size);
+    text-align: center;
+    cursor: pointer;
+    transition: background .2s ease, opacity .5s linear;
+    font-size: calc(var(--button-size) / 2);
+    box-sizing: border-box;
+    position: fixed;
+    box-shadow: 1px 1px 10px #8a8a8a;
+    color: var(--color-text-button);
+    background: var(--color-background-button);
+    opacity: 1;
+}
+
+#dev-galery__screen .dev-galery__btn:hover {
+
+    background: var(--color-background-button-hover);
+    color: var(--color-text-button-hover);
+}
+
+#dev-galery__screen .dev-galery__close,
+#dev-galery__screen .dev-galery__download {
+    top: var(--button-base-offset);
+}
+
+#dev-galery__screen .dev-galery__close,
+#dev-galery__screen .dev-galery__next {
+    right: var(--button-base-offset)
+}
+
+#dev-galery__screen .dev-galery__prev,
+#dev-galery__screen .dev-galery__download {
+    right: calc(var(--button-size) + var(--button-base-offset) + var(--button-gap));
+}
+
+#dev-galery__screen .dev-galery__prev,
+#dev-galery__screen .dev-galery__next {
+    bottom: var(--button-base-offset)
+}
+
+#dev-galery__screen .dev-galery__download {
+    background-color: var(--color-background-button-download);
+}
+
+#dev-galery__screen .dev-galery__download:hover {
+    color: var(--color-text-button-download-hover);
+}
