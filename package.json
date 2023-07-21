@@ -1,6 +1,6 @@
 {
   "name": "smart-image-gallery",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Shows on click found by selector images in the pop-up window",
   "main": "dist/smartImageGallery.cjs.js",
   "module": "dist/smartImageGallery.esm.js",
