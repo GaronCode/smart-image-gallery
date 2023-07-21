@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+@keyframes Animation { 
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+main {
+    display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+    padding: 20px;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(241,245,248);
+    background: linear-gradient(45deg, #006eff, #ffffff, #5ec722);
+    animation: Animation 15s ease infinite;
+    background-size: 200% 200%;
+}
+h1 {
+    color: #2c322f;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 60px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.container img {
+    width: 150px;
+    border-radius: 5%;
+}
+
