@@ -6,6 +6,7 @@
   "module": "dist/smartImageGallery.esm.js",
   "browser": "dist/smartImageGallery.umd.js",
   "iife": "dist/smartImageGallery.iife.js",
+  "iifeMin": "dist/smartImageGallery.iife.mini.js",
   "scripts": {
     "build": "rollup -c"
   },
@@ -19,13 +20,22 @@
   ],
   "author": "GaronCode",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GaronCode/smart-image-gallery"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.8",
     "@babel/preset-env": "^7.22.7",
+    "@rollup/plugin-node-resolve": "^15.1.0",
     "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-styles": "^4.0.0"
+  },
+  "dependencies": {
+    "@rollup/plugin-terser": "^0.4.3",
+    "smart-swipe-controller": "^0.1.3"
   }
 }

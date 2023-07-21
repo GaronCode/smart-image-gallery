@@ -1,24 +1,36 @@
-
+# Smart Image Gallery
 
 ## Usage
-1. place the images on the page in any way. You need to make sure that there is a unique CSS selector to search for them
-2. Include Gallery.
+1. place images on the page in any way. You need to make sure that there is a unique CSS selector to search them
+   
+2. **Include Gallery**.
     If you want use as:
-   -  a module
+    - via **NPM**
+    install package
+    ```bash
+    npm i smart-image-gallery
+    ```
+    include
+    ```js
+    import { SmartImageGallery } from "smart-image-gallery";
+    ```
+    - **module**
+    copy file from dist folder to your project (full or minify version)
     ```html
     <script type="module">
-    import {SmartImgGallery} from "./smartImageGallery.esm.js";
-    const Settings = { ... }
-    const Gallery = new SmartImgGallery( Settings );
+    // for minify version 
+    // import { SmartImageGallery } from "./smartImageGallery.esm.mini.js";
+
+    import { SmartImageGallery } from "./smartImageGallery.esm.js";
     </script>
     ```
-    - iife-style (you need use global object `SIG`)
+    - **iife-style** (you need use global object `SIG`)
     ```html
+    <!--
+        For minify version
+        <script src="smartImageGallery.iife.mini.js"></script>
+    -->
     <script src="smartImageGallery.iife.js"></script>
-    <script>
-    const Settings = { ... }
-    const Gallery = new SIG.SmartImgGallery( Settings );
-    </script>
     ```
 3. Setting up the gallery (object **Settings**)
    (default settings)
@@ -37,9 +49,12 @@
         // flag for initializing all handlers and events at once when creating
         init: true,
     }
+    const Gallery = new SmartImageGallery( Settings );
     ```
     If there was no initialization during creation, you need to use the method `init` (`Gallery.init()`)
-4. Done. When you click on the image, a window should appear.
+
+5. If you
+6. Done. When you click on the image, a window should appear.
 
 
 ## Methods
@@ -50,17 +65,17 @@
 | next() | show next img |
 | init() | initialization of handlers and events for script |
 
-## События
+## Addition Events
 On `document.body` script triggers the following events:
-- **smartGalleryOpen**:  on open
-- **smartGalleryClose**: on close
+- **smartgalleryopen**:  on open
+- **smartgalleryclose**: on close
 Usage example:
 ```js
-document.body.addEventListener("smartGalleryOpen", () =>
+document.body.addEventListener("smartgalleryopen", () =>
     ...
 );
 
-document.body.addEventListener("smartGalleryClose", () =>
+document.body.addEventListener("smartgalleryclose", () =>
     ...
 );
 ```

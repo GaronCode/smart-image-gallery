@@ -8,3 +8,13 @@ export const LangRu = {
         },
     },
 };
+export const LangEn = {
+    errors: {
+        noImages: "Can't find images by this selector",
+        initFailed: "Can't set up the gallery!",
+        simpleTapController: {
+            notFound: "SimpleSwipeController isn't include. Swipes disabled",
+            initError: "Can't init swipe events",
+        },
+    },
+};

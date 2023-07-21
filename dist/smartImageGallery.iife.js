@@ -10,30 +10,30 @@ var SIG = (function (exports) {
       return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     }, _typeof(obj);
   }
-  function _classCallCheck(instance, Constructor) {
+  function _classCallCheck$1(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
   }
-  function _defineProperties(target, props) {
+  function _defineProperties$1(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+      Object.defineProperty(target, _toPropertyKey$1(descriptor.key), descriptor);
     }
   }
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
+  function _createClass$1(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties$1(Constructor, staticProps);
     Object.defineProperty(Constructor, "prototype", {
       writable: false
     });
     return Constructor;
   }
-  function _defineProperty(obj, key, value) {
-    key = _toPropertyKey(key);
+  function _defineProperty$1(obj, key, value) {
+    key = _toPropertyKey$1(key);
     if (key in obj) {
       Object.defineProperty(obj, key, {
         value: value,
@@ -71,6 +71,103 @@ var SIG = (function (exports) {
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
+  function _toPrimitive$1(input, hint) {
+    if (typeof input !== "object" || input === null) return input;
+    var prim = input[Symbol.toPrimitive];
+    if (prim !== undefined) {
+      var res = prim.call(input, hint || "default");
+      if (typeof res !== "object") return res;
+      throw new TypeError("@@toPrimitive must return a primitive value.");
+    }
+    return (hint === "string" ? String : Number)(input);
+  }
+  function _toPropertyKey$1(arg) {
+    var key = _toPrimitive$1(arg, "string");
+    return typeof key === "symbol" ? key : String(key);
+  }
+  function _classPrivateFieldGet(receiver, privateMap) {
+    var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get");
+    return _classApplyDescriptorGet(receiver, descriptor);
+  }
+  function _classExtractFieldDescriptor(receiver, privateMap, action) {
+    if (!privateMap.has(receiver)) {
+      throw new TypeError("attempted to " + action + " private field on non-instance");
+    }
+    return privateMap.get(receiver);
+  }
+  function _classApplyDescriptorGet(receiver, descriptor) {
+    if (descriptor.get) {
+      return descriptor.get.call(receiver);
+    }
+    return descriptor.value;
+  }
+  function _classPrivateMethodGet(receiver, privateSet, fn) {
+    if (!privateSet.has(receiver)) {
+      throw new TypeError("attempted to get private field on non-instance");
+    }
+    return fn;
+  }
+  function _checkPrivateRedeclaration(obj, privateCollection) {
+    if (privateCollection.has(obj)) {
+      throw new TypeError("Cannot initialize the same private elements twice on an object");
+    }
+  }
+  function _classPrivateFieldInitSpec(obj, privateMap, value) {
+    _checkPrivateRedeclaration(obj, privateMap);
+    privateMap.set(obj, value);
+  }
+  function _classPrivateMethodInitSpec(obj, privateSet) {
+    _checkPrivateRedeclaration(obj, privateSet);
+    privateSet.add(obj);
+  }
+
+  var LangEn = {
+    errors: {
+      noImages: "Can't find images by this selector",
+      initFailed: "Can't set up the gallery!",
+      simpleTapController: {
+        notFound: "SimpleSwipeController isn't include. Swipes disabled",
+        initError: "Can't init swipe events"
+      }
+    }
+  };
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
+    }
+  }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", {
+      writable: false
+    });
+    return Constructor;
+  }
+  function _defineProperty(obj, key, value) {
+    key = _toPropertyKey(key);
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
   function _toPrimitive(input, hint) {
     if (typeof input !== "object" || input === null) return input;
     var prim = input[Symbol.toPrimitive];
@@ -87,132 +184,104 @@ var SIG = (function (exports) {
   }
 
   /**
-   * Библиотека для удобного создания событий свайпов и тапов на любой html элемент
-   * Поддерживаемые события:
+   * Lib simple add additional tap events in HTML element
+   * additional events:
    * - swipeLeft
    * - swipeRight
    * - swipeUp
    * - swipeDown
    * - tap
    */
-  var SimpleSwipeController = /*#__PURE__*/function () {
+  var SmartSwipeController = /*#__PURE__*/function () {
     /**
-     * Применть библиотеку к элементу
-     * @param {HTMLElement} element - любой HTML элемент
-     * @param {number} offset - зона не срабатывания событий в пикселях (кроме события tap)
+     * Apply additional tap events in HTML element
+     * @param {HTMLElement} element - any HTML element
+     * @param {number} offset - the zone of non-triggering side events in pixels (except for the tap event)
      */
-    function SimpleSwipeController(element) {
-      var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      _classCallCheck(this, SimpleSwipeController);
-      _defineProperty(this, "start", {
+    function SmartSwipeController(element) {
+      var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5;
+      _classCallCheck(this, SmartSwipeController);
+      _defineProperty(this, "_start", {
         x: 0,
         y: 0
       });
-      _defineProperty(this, "eventCallbacks", {
-        swipeLeft: [],
-        swipeRight: [],
-        swipeUp: [],
-        swipeDown: [],
-        tap: []
-      });
+      /**
+       * Events Array. Can be changed
+       */
+      _defineProperty(this, "eventNames", ["swipeleft", "swiperight", "swipeup", "swipedown", "tap"]);
       this.element = element;
       this.offset = offset;
-      this.init();
+      this.addEvents();
     }
-    _createClass(SimpleSwipeController, [{
-      key: "init",
-      value: function init() {
+    /**
+     * Manualy init events
+     */
+    _createClass(SmartSwipeController, [{
+      key: "addEvents",
+      value: function addEvents() {
         var _this = this;
-        this.element.addEventListener("touchstart", function (e) {
-          _this.start.x = e.changedTouches[0].screenX;
-          _this.start.y = e.changedTouches[0].screenY;
-        });
-        this.element.addEventListener("touchend", function (e) {
-          return _this.handler(e.changedTouches[0].screenX, e.changedTouches[0].screenY, e);
-        });
+        this._startEvent = function (e) {
+          _this._start.x = e.changedTouches ? e.changedTouches[0].screenX : e.screenX;
+          _this._start.y = e.changedTouches ? e.changedTouches[0].screenY : e.screenY;
+        };
+        this._endEvent = function (e) {
+          return _this._handler(e.changedTouches ? e.changedTouches[0].screenX : e.screenX, e.changedTouches ? e.changedTouches[0].screenY : e.screenY, e);
+        };
+        this._events();
       }
       /**
-       * Добавить запуск функции на событие ()
-       * @param {string} eventName - название события
-       * @param {Function} callback - функция для запуска. При срабатывании ей будет передан объект стандартного событие первым параметром и название события вторым
+       * remove additional events
        */
     }, {
-      key: "addEventListener",
-      value: function addEventListener(eventName, callback) {
-        this.setEventGroup(eventName, function (EventGroup) {
-          EventGroup.push(callback);
-        });
-        return this;
-      }
-      /**
-       * Удаляет добавленное событие
-       * @param {string} eventName - название события
-       * @param {Function} callback - тело функции
-       */
-    }, {
-      key: "removeEventListener",
-      value: function removeEventListener(eventName, callback) {
-        this.setEventGroup(eventName, function (EventGroup) {
-          EventGroup.splice(EventGroup.indexOf(callback), 1);
-        });
-        return this;
+      key: "removeEvents",
+      value: function removeEvents() {
+        this._events("remove");
       }
     }, {
-      key: "setEventGroup",
-      value: function setEventGroup(eventName, groupEditorCallback) {
-        var EventGroup = this.eventCallbacks[eventName];
-        if (EventGroup === undefined) {
-          console.log("\u041D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u0441\u043E\u0431\u044B\u0442\u0438\u044F \u0441 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435\u043C ".concat(eventName, ". \u0421\u043F\u0438\u0441\u043E\u043A \u0438\u043C\u0435\u044E\u0449\u0438\u0445\u0441\u044F \u0441\u043E\u0431\u044B\u0442\u0438\u0439: ").concat(this.eventsName()));
-          return false;
-        }
-        groupEditorCallback(EventGroup);
-        return this;
+      key: "_events",
+      value: function _events() {
+        var a = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "add";
+        this.element[a + "EventListener"]("touchstart", this._startEvent);
+        this.element[a + "EventListener"]("mousedown", this._startEvent);
+        this.element[a + "EventListener"]("touchend", this._endEvent);
+        this.element[a + "EventListener"]("mouseup", this._endEvent);
       }
     }, {
-      key: "triggerEvent",
-      value: function triggerEvent(eventName, event) {
-        var _this$eventCallbacks$;
-        (_this$eventCallbacks$ = this.eventCallbacks[eventName]) === null || _this$eventCallbacks$ === void 0 ? void 0 : _this$eventCallbacks$.forEach(function (callback) {
-          callback(event, eventName);
-        });
-      }
-    }, {
-      key: "handler",
-      value: function handler(x, y, event) {
-        var _this2 = this;
-        var events = [];
-        if (x < this.start.x - this.offset) events.push("swipeLeft");else if (x > this.start.x + this.offset) events.push("swipeRight");
-        if (y < this.start.y - this.offset) events.push("swipeUp");else if (y > this.start.y + this.offset) events.push("swipeDown");
-        if (y === this.start.y) events.push("tap");
-        events.forEach(function (eventName) {
-          return _this2.triggerEvent(eventName, event);
-        });
-      }
-    }, {
-      key: "eventsName",
-      value: function eventsName() {
-        var str = "";
-        for (var key in this.eventCallbacks) {
-          if (Object.hasOwnProperty.call(this.eventCallbacks, key)) {
-            str += this.eventCallbacks[key];
+      key: "_handler",
+      value: function _handler(x, y, e) {
+        var iX = x - this._start.x,
+          iY = y - this._start.y;
+        var normX = Math.abs(iX) - this.offset <= 0 ? 0 : Math.abs(iX) - this.offset,
+          normY = Math.abs(iY) - this.offset <= 0 ? 0 : Math.abs(iY) - this.offset;
+        if (normX === 0 && normY === 0) {
+          this._triggerEvent(4, e);
+        } else if (normX > normY) {
+          if (iX < 0) {
+            this._triggerEvent(0, e);
+          } else if (iX > 0) {
+            this._triggerEvent(1, e);
+          }
+        } else {
+          if (iY < 0) {
+            this._triggerEvent(2, e);
+          } else if (iY > 0) {
+            this._triggerEvent(3, e);
           }
         }
-        return str;
+      }
+    }, {
+      key: "_getEventName",
+      value: function _getEventName(eventId) {
+        return this.eventNames[eventId];
+      }
+    }, {
+      key: "_triggerEvent",
+      value: function _triggerEvent(eventId, event) {
+        this.element.dispatchEvent(new Event(this._getEventName(eventId), event));
       }
     }]);
-    return SimpleSwipeController;
+    return SmartSwipeController;
   }();
-
-  var LangRu = {
-    errors: {
-      noImages: "Не найдены изображения по селектору",
-      initFailed: "Не удалось настроить галерею!",
-      simpleTapController: {
-        notFound: "SimpleSwipeController не подключен. Свайпы не активны",
-        initError: "Не удалось подключить свайпы"
-      }
-    }
-  };
 
   var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
@@ -220,24 +289,43 @@ var SIG = (function (exports) {
   n(css,{});
 
   /**
-   * Создаёт галерею при клике на изображение. Изображения собираются по селлектору.
-   * В стилях в самом начале есть все настройки отображения.
+   * Creates a gallery when an image is clicked. Images are collected by a selector.
+   * Styles have all the display settings at the very beginning. Settings can be changed before initialization.
    *
-   * На document.body создаёт события:
-   * - smartGalleryOpen:  при открытии окна
-   * - smartGalleryClose: при закрытии окна
+   * SmartImageGallery adding additional events to document.body создаёт события:
+   * - smartgalleryopen:  when the gallery is opened
+   * - smartgalleryclose: when the gallery is closed
    */
-  var SmartImgGallery = /*#__PURE__*/function () {
+  var _filterCopies = /*#__PURE__*/new WeakSet();
+  var _show = /*#__PURE__*/new WeakSet();
+  var _dispatchEvents = /*#__PURE__*/new WeakSet();
+  var _keyControlCallback = /*#__PURE__*/new WeakMap();
+  var _animation = /*#__PURE__*/new WeakSet();
+  var _getArrows = /*#__PURE__*/new WeakSet();
+  var _getCurrentImg = /*#__PURE__*/new WeakSet();
+  var _createElements = /*#__PURE__*/new WeakSet();
+  var _createBackground = /*#__PURE__*/new WeakSet();
+  var _createImgEl = /*#__PURE__*/new WeakSet();
+  var _putImg = /*#__PURE__*/new WeakSet();
+  var _addButtonsEvents = /*#__PURE__*/new WeakSet();
+  var _addSwipe = /*#__PURE__*/new WeakSet();
+  var _animationOut = /*#__PURE__*/new WeakSet();
+  var _update = /*#__PURE__*/new WeakSet();
+  var _createEl = /*#__PURE__*/new WeakSet();
+  var _removeChilds = /*#__PURE__*/new WeakSet();
+  var _updateImg = /*#__PURE__*/new WeakSet();
+  var _updateArrows = /*#__PURE__*/new WeakSet();
+  var SmartImageGallery = /*#__PURE__*/function () {
     /**
-     * @param settings - настройки галереи
-     * @param {string} [settings.containerSelector="body"] - селектор места под модальное окно
-     * @param {string} [settings.imagesSelector="img"] - селектор для сбора изображений
-     * @param {boolean} [settings.showDownloadButton=false] - отображение кнопки загрузки
-     * @param {boolean} [settings.displayCopies=true] - отображать ли копии в галереи (проверка по совпадению пути)
-     * @param {number} [settings.animationDuration=0.3] - длительность анимации перехода изображений
-     * @param {boolean} [settings.init=true] - проводить инициализацию сразу после создания экземпляра (можно будет вызвать метод .init() )
+     * @param settings - gallery settings
+     * @param {string} [settings.containerSelector="body"] - selector for modal window
+     * @param {string} [settings.imagesSelector="img"] - find images selector
+     * @param {boolean} [settings.showDownloadButton=false] - show download button
+     * @param {boolean} [settings.displayCopies=true] - display copies of pictures or not (defines copies or not by img src)
+     * @param {number} [settings.animationDuration=0.3] - animation duration
+     * @param {boolean} [settings.init=true] - init after create (then you can call method .init() )
      */
-    function SmartImgGallery(_ref) {
+    function SmartImageGallery(_ref) {
       var _this = this;
       var _ref$containerSelecto = _ref.containerSelector,
         containerSelector = _ref$containerSelecto === void 0 ? "body" : _ref$containerSelecto,
@@ -251,21 +339,39 @@ var SIG = (function (exports) {
         init = _ref$init === void 0 ? true : _ref$init,
         _ref$animationDuratio = _ref.animationDuration,
         animationDuration = _ref$animationDuratio === void 0 ? 0.3 : _ref$animationDuratio;
-      _classCallCheck(this, SmartImgGallery);
-      // селекторы
-      _defineProperty(this, "rootSelector", "body, html");
-      _defineProperty(this, "containerSelector", void 0);
-      _defineProperty(this, "imagesSelector", void 0);
-      //классы и события
-      _defineProperty(this, "modalId", "dev-galery__screen");
-      _defineProperty(this, "showClass", "dev-galery__screen_show");
-      _defineProperty(this, "modalElements", {
+      _classCallCheck$1(this, SmartImageGallery);
+      _classPrivateMethodInitSpec(this, _updateArrows);
+      _classPrivateMethodInitSpec(this, _updateImg);
+      _classPrivateMethodInitSpec(this, _removeChilds);
+      _classPrivateMethodInitSpec(this, _createEl);
+      _classPrivateMethodInitSpec(this, _update);
+      _classPrivateMethodInitSpec(this, _animationOut);
+      _classPrivateMethodInitSpec(this, _addSwipe);
+      _classPrivateMethodInitSpec(this, _addButtonsEvents);
+      _classPrivateMethodInitSpec(this, _putImg);
+      _classPrivateMethodInitSpec(this, _createImgEl);
+      _classPrivateMethodInitSpec(this, _createBackground);
+      _classPrivateMethodInitSpec(this, _createElements);
+      _classPrivateMethodInitSpec(this, _getCurrentImg);
+      _classPrivateMethodInitSpec(this, _getArrows);
+      _classPrivateMethodInitSpec(this, _animation);
+      _classPrivateMethodInitSpec(this, _dispatchEvents);
+      _classPrivateMethodInitSpec(this, _show);
+      _classPrivateMethodInitSpec(this, _filterCopies);
+      // selectors
+      _defineProperty$1(this, "rootSelector", "body, html");
+      _defineProperty$1(this, "containerSelector", void 0);
+      _defineProperty$1(this, "imagesSelector", void 0);
+      // CSS classes and events
+      _defineProperty$1(this, "modalId", "dev-galery__screen");
+      _defineProperty$1(this, "showClass", "dev-galery__screen_show");
+      _defineProperty$1(this, "modalElements", {
         imageContainer: {
           class: "dev-galery__image",
           show: true
         },
         close: {
-          class: "dev-galery__close dev-galery__btn",
+          class: "dev-galery__close dev-galery__btn ",
           content: "✕",
           show: true,
           click: function click() {
@@ -273,7 +379,7 @@ var SIG = (function (exports) {
           }
         },
         prev: {
-          class: "dev-galery__prev dev-galery__btn",
+          class: "dev-galery__prev dev-galery__btn ",
           content: "◀",
           show: true,
           click: function click() {
@@ -281,7 +387,7 @@ var SIG = (function (exports) {
           }
         },
         next: {
-          class: "dev-galery__next dev-galery__btn",
+          class: "dev-galery__next dev-galery__btn ",
           content: "▶",
           show: true,
           click: function click() {
@@ -289,7 +395,7 @@ var SIG = (function (exports) {
           }
         },
         download: {
-          class: "dev-galery__download dev-galery__btn",
+          class: "dev-galery__download dev-galery__btn ",
           content: "▼",
           show: true,
           click: function click() {
@@ -297,27 +403,30 @@ var SIG = (function (exports) {
           }
         }
       });
-      _defineProperty(this, "events", {
+      _defineProperty$1(this, "events", {
         name: {
-          open: "smartGalleryOpen",
-          close: "smartGalleryClose"
+          open: "smartgalleryopen",
+          close: "smartgalleryclose"
         },
         html: document.body
       });
-      _defineProperty(this, "keyControlCallback", function (e) {
-        switch (e.keyCode) {
-          case 39:
-            _this.next();
-            break;
-          case 37:
-            _this.prev();
-            break;
-          case 27:
-            _this.hide();
-            break;
+      _classPrivateFieldInitSpec(this, _keyControlCallback, {
+        writable: true,
+        value: function value(e) {
+          switch (e.keyCode) {
+            case 39:
+              _this.next();
+              break;
+            case 37:
+              _this.prev();
+              break;
+            case 27:
+              _this.hide();
+              break;
+          }
         }
       });
-      this.translate = LangRu;
+      this.translate = LangEn;
       this.containerSelector = containerSelector;
       this.imagesSelector = imagesSelector;
       this.displayCopies = displayCopies;
@@ -326,11 +435,11 @@ var SIG = (function (exports) {
       if (init) this.init();
     }
     /**
-     * Подготовка галереи к работе.
-     * Устанавливает события клика на изображения, сохраняет место размещения, удаляет копии (если нужно)
+     * Initialize gallery
+     * Sets click events on images, takes all HTML elements by selector, deletes copies, etc
      * @returns {boolean}
      */
-    _createClass(SmartImgGallery, [{
+    _createClass$1(SmartImageGallery, [{
       key: "init",
       value: function init() {
         var _this2 = this;
@@ -346,11 +455,11 @@ var SIG = (function (exports) {
             return;
           }
           var filеrRejected = {};
-          if (!this.displayCopies) filеrRejected = this.filterCopies();
+          if (!this.displayCopies) filеrRejected = _classPrivateMethodGet(this, _filterCopies, _filterCopies2).call(this);
           this.images.forEach(function (img, i) {
             var addEL = function addEL(el) {
               return el.addEventListener("click", function () {
-                return _this2.show(i);
+                return _classPrivateMethodGet(_this2, _show, _show2).call(_this2, i);
               });
             };
             if (filеrRejected[img.src]) {
@@ -367,274 +476,265 @@ var SIG = (function (exports) {
         }
       }
     }, {
-      key: "filterCopies",
-      value: function filterCopies() {
-        var srcs = {},
-          imgs = {};
-        this.images = this.images.filter(function (img) {
-          if (srcs[img.src] === undefined) {
-            return srcs[img.src] = true;
-          }
-          imgs[img.src] === undefined ? imgs[img.src] = [img] : imgs[img.src].push(img);
-          return false;
-        });
-        return imgs;
-      }
-    }, {
-      key: "show",
-      value: function show(id) {
-        this.nowId = id;
-        var bg = this.createBackground();
-        this.bgContainer = bg;
-        this.container.append(bg);
-        this.animation(true);
-        this.createElements(bg);
-        this.modalElements.imageContainer.html.style.animationDuration = this.animationDuration;
-        this.addButtonsEvents();
-        this.updateImg();
-        this.updateArrows();
-        this.startKeyControl();
-        this.dispatchEvents("open");
-      }
-    }, {
-      key: "dispatchEvents",
-      value: function dispatchEvents(eventName) {
-        this.events.html.dispatchEvent(new Event(this.events.name[eventName]));
-      }
-    }, {
-      key: "animation",
-      value: function animation(a, callback) {
-        var _this3 = this;
-        if (a) {
-          setTimeout(function () {
-            _this3.bgContainer.classList["add"](_this3.showClass);
-          }, 10);
-        } else {
-          this.bgContainer.classList["remove"](this.showClass);
-          this.bgContainer.addEventListener("transitionend", function (e) {
-            callback(e);
-          }, false);
-        }
-      }
-    }, {
       key: "startKeyControl",
-      value: function startKeyControl() {
-        document.body.addEventListener("keydown", this.keyControlCallback);
+      value:
+      /**
+       * Add key control
+       */
+      function startKeyControl() {
+        document.body.addEventListener("keydown", _classPrivateFieldGet(this, _keyControlCallback));
       }
+      /**
+       * Remove key control
+       */
     }, {
       key: "stopKeyControl",
       value: function stopKeyControl() {
-        document.body.removeEventListener("keydown", this.keyControlCallback);
-      }
-    }, {
-      key: "getArrows",
-      value: function getArrows() {
-        return {
-          next: this.modalElements.next.html,
-          prev: this.modalElements.prev.html
-        };
-      }
-    }, {
-      key: "getCurrentImg",
-      value: function getCurrentImg() {
-        return this.images[this.nowId];
-      }
-    }, {
-      key: "createElements",
-      value: function createElements(destination) {
-        for (var key in this.modalElements) {
-          if (Object.hasOwnProperty.call(this.modalElements, key)) {
-            var element = this.modalElements[key];
-            if (!element.show) continue;
-            element.html = this.createEl(element.class);
-            if (element.content !== undefined) {
-              element.html.appendChild(document.createTextNode(element.content));
-            }
-            destination.appendChild(element.html);
-          }
-        }
-      }
-    }, {
-      key: "createBackground",
-      value: function createBackground() {
-        var bg = this.createEl();
-        bg.id = this.modalId;
-        this.modal = bg;
-        return bg;
-      }
-    }, {
-      key: "createImgEl",
-      value: function createImgEl(src) {
-        var img = this.createEl("", "img");
-        img.src = src;
-        return img;
-      }
-    }, {
-      key: "putImg",
-      value: function putImg(img) {
-        img.addEventListener("click", function (e) {
-          e.stopPropagation();
-          e.cancelBubble = true;
-        });
-        this.addSwipe(img);
-        var html = this.modalElements.imageContainer.html;
-        this.removeChilds(html);
-        html.appendChild(img);
-      }
-    }, {
-      key: "addButtonsEvents",
-      value: function addButtonsEvents() {
-        var _this4 = this;
-        var self = this;
-        var closeEvent = function closeEvent(e) {
-          self.hide();
-        };
-        this.modal.addEventListener("click", closeEvent);
-        var _loop = function _loop() {
-          if (Object.hasOwnProperty.call(_this4.modalElements, name)) {
-            var e = _this4.modalElements[name];
-            if (!e.html || !e.show || !e.click) return "continue";
-            e.html.addEventListener("click", function (event) {
-              event.stopPropagation();
-              e.click();
-            });
-          }
-        };
-        for (var name in this.modalElements) {
-          var _ret = _loop();
-          if (_ret === "continue") continue;
-        }
-      }
-    }, {
-      key: "addSwipe",
-      value: function addSwipe(el) {
-        var _this5 = this;
-        if (_typeof(SimpleSwipeController) === undefined) {
-          console.log(this.translate.errors.simpleTapController.notFound);
-          return;
-        }
-        try {
-          new SimpleSwipeController(el, 2).addEventListener("swipeLeft", function () {
-            _this5.next();
-          }).addEventListener("swipeRight", function () {
-            _this5.prev();
-          });
-        } catch (error) {
-          console.log(this.translate.errors.simpleTapController.initError, error);
-        }
+        document.body.removeEventListener("keydown", _classPrivateFieldGet(this, _keyControlCallback));
       }
     }, {
       key: "downloadCurrent",
-      value: function downloadCurrent(e) {
+      value:
+      /**
+       * Start download event for current img
+       */
+      function downloadCurrent() {
         var a = document.createElement("a");
-        var url = this.getCurrentImg().src;
+        var url = _classPrivateMethodGet(this, _getCurrentImg, _getCurrentImg2).call(this).src;
         a.href = url;
         a.download = url.split("/").pop();
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
       }
-    }, {
-      key: "updateArrows",
-      value: function updateArrows() {
-        var _this$getArrows = this.getArrows(),
-          next = _this$getArrows.next,
-          prev = _this$getArrows.prev;
-        prev.style.opacity = "1";
-        next.style.opacity = "1";
-        if (this.nowId <= 0) {
-          prev.style.opacity = "0";
-        }
-        if (this.nowId >= this.images.length - 1) {
-          next.style.opacity = "0";
-        }
-      }
-    }, {
-      key: "updateImg",
-      value: function updateImg() {
-        this.putImg(this.createImgEl(this.getCurrentImg().src));
-      }
+
+      /**
+       * Hide modal
+       */
     }, {
       key: "hide",
       value: function hide() {
-        var _this6 = this;
-        this.animation(false, function () {
-          _this6.root.style.overflow = "auto";
-          _this6.modal.remove();
-          _this6.stopKeyControl();
-          _this6.dispatchEvents("close");
+        var _this3 = this;
+        _classPrivateMethodGet(this, _animation, _animation2).call(this, false, function () {
+          _this3.root.style.overflow = "auto";
+          _this3.modal.remove();
+          _this3.stopKeyControl();
+          _classPrivateMethodGet(_this3, _dispatchEvents, _dispatchEvents2).call(_this3, "close");
         });
       }
+      /**
+       * Show prev img if can
+       * @returns {Boolead} - is go prew?
+       */
     }, {
       key: "prev",
       value: function prev() {
-        var _this7 = this;
-        if (this.nowId <= 0 || this.prevAStarted) return;
-        this.animationOut("dev-galery-fade-right", function () {
-          _this7.nowId--;
-          _this7.update("dev-galery-fade-in-left");
+        var _this4 = this;
+        if (this.nowId <= 0 || this.prevAStarted) return false;
+        _classPrivateMethodGet(this, _animationOut, _animationOut2).call(this, "dev-galery-fade-right", function () {
+          _this4.nowId--;
+          _classPrivateMethodGet(_this4, _update, _update2).call(_this4, "dev-galery-fade-in-left");
         });
+        return true;
       }
+      /**
+       * Show next Image if can
+       * @returns {Boolean}
+       */
     }, {
       key: "next",
       value: function next() {
-        var _this8 = this;
-        if (this.nowId >= this.images.length - 1) return;
-        this.animationOut("dev-galery-fade-left", function () {
-          _this8.nowId++;
-          _this8.update("dev-galery-fade-in-right");
+        var _this5 = this;
+        if (this.nowId >= this.images.length - 1) return false;
+        _classPrivateMethodGet(this, _animationOut, _animationOut2).call(this, "dev-galery-fade-left", function () {
+          _this5.nowId++;
+          _classPrivateMethodGet(_this5, _update, _update2).call(_this5, "dev-galery-fade-in-right");
         });
-      }
-    }, {
-      key: "animationOut",
-      value: function animationOut(className, callback) {
-        var _this9 = this;
-        if (this.isAnimating) {
-          return;
-        }
-        var modalImg = this.modalElements.imageContainer.html;
-        modalImg.classList.add(className);
-        this.isAnimating = true;
-        var removeCallback = function removeCallback() {
-          modalImg.classList.remove(className);
-          _this9.isAnimating = false;
-          modalImg.removeEventListener("animationend", removeCallback);
-          callback();
-        };
-        modalImg.addEventListener("animationend", removeCallback);
-      }
-    }, {
-      key: "update",
-      value: function update(a) {
-        var _this10 = this;
-        this.updateImg();
-        if (a) {
-          this.animationOut(a, function () {
-            _this10.updateArrows();
-          });
-        } else this.updateArrows();
-      }
-    }, {
-      key: "createEl",
-      value: function createEl() {
-        var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-        var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "div";
-        var element = document.createElement(type);
-        element.className = className;
-        return element;
-      }
-    }, {
-      key: "removeChilds",
-      value: function removeChilds(el) {
-        while (el.firstChild) {
-          el.removeChild(el.lastChild);
-        }
+        return true;
       }
     }]);
-    return SmartImgGallery;
+    return SmartImageGallery;
   }();
+  function _filterCopies2() {
+    var srcs = {},
+      imgs = {};
+    this.images = this.images.filter(function (img) {
+      if (srcs[img.src] === undefined) {
+        return srcs[img.src] = true;
+      }
+      imgs[img.src] === undefined ? imgs[img.src] = [img] : imgs[img.src].push(img);
+      return false;
+    });
+    return imgs;
+  }
+  function _show2(id) {
+    this.nowId = id;
+    var bg = _classPrivateMethodGet(this, _createBackground, _createBackground2).call(this);
+    this.bgContainer = bg;
+    this.container.append(bg);
+    _classPrivateMethodGet(this, _animation, _animation2).call(this, true);
+    _classPrivateMethodGet(this, _createElements, _createElements2).call(this, bg);
+    this.modalElements.imageContainer.html.style.animationDuration = this.animationDuration;
+    _classPrivateMethodGet(this, _addButtonsEvents, _addButtonsEvents2).call(this);
+    _classPrivateMethodGet(this, _updateImg, _updateImg2).call(this);
+    _classPrivateMethodGet(this, _updateArrows, _updateArrows2).call(this);
+    this.startKeyControl();
+    _classPrivateMethodGet(this, _dispatchEvents, _dispatchEvents2).call(this, "open");
+  }
+  function _dispatchEvents2(eventName) {
+    this.events.html.dispatchEvent(new Event(this.events.name[eventName]));
+  }
+  function _animation2(a, callback) {
+    var _this6 = this;
+    if (a) {
+      setTimeout(function () {
+        _this6.bgContainer.classList["add"](_this6.showClass);
+      }, 10);
+    } else {
+      this.bgContainer.classList["remove"](this.showClass);
+      this.bgContainer.addEventListener("transitionend", function (e) {
+        callback(e);
+      }, false);
+    }
+  }
+  function _getArrows2() {
+    return {
+      next: this.modalElements.next.html,
+      prev: this.modalElements.prev.html
+    };
+  }
+  function _getCurrentImg2() {
+    return this.images[this.nowId];
+  }
+  function _createElements2(destination) {
+    for (var key in this.modalElements) {
+      if (Object.hasOwnProperty.call(this.modalElements, key)) {
+        var element = this.modalElements[key];
+        if (!element.show) continue;
+        element.html = _classPrivateMethodGet(this, _createEl, _createEl2).call(this, element.class);
+        if (element.content !== undefined) {
+          element.html.appendChild(document.createTextNode(element.content));
+        }
+        destination.appendChild(element.html);
+      }
+    }
+  }
+  function _createBackground2() {
+    var bg = _classPrivateMethodGet(this, _createEl, _createEl2).call(this);
+    bg.id = this.modalId;
+    this.modal = bg;
+    return bg;
+  }
+  function _createImgEl2(src) {
+    var img = _classPrivateMethodGet(this, _createEl, _createEl2).call(this, "", "img");
+    img.src = src;
+    return img;
+  }
+  function _putImg2(img) {
+    img.addEventListener("click", function (e) {
+      e.stopPropagation();
+      e.cancelBubble = true;
+    });
+    _classPrivateMethodGet(this, _addSwipe, _addSwipe2).call(this, img);
+    var html = this.modalElements.imageContainer.html;
+    _classPrivateMethodGet(this, _removeChilds, _removeChilds2).call(this, html);
+    html.appendChild(img);
+  }
+  function _addButtonsEvents2() {
+    var _this7 = this;
+    var self = this;
+    var closeEvent = function closeEvent(e) {
+      self.hide();
+    };
+    this.modal.addEventListener("click", closeEvent);
+    var _loop = function _loop() {
+      if (Object.hasOwnProperty.call(_this7.modalElements, name)) {
+        var e = _this7.modalElements[name];
+        if (!e.html || !e.show || !e.click) return "continue";
+        e.html.addEventListener("click", function (event) {
+          event.stopPropagation();
+          e.click();
+        });
+      }
+    };
+    for (var name in this.modalElements) {
+      var _ret = _loop();
+      if (_ret === "continue") continue;
+    }
+  }
+  function _addSwipe2(el) {
+    var _this8 = this;
+    if (_typeof(SmartSwipeController) === undefined) {
+      console.log(this.translate.errors.simpleTapController.notFound);
+      return;
+    }
+    try {
+      new SmartSwipeController(el, 2);
+      el.addEventListener("swipeleft", function () {
+        _this8.next();
+      });
+      el.addEventListener("swiperight", function () {
+        _this8.prev();
+      });
+    } catch (error) {
+      console.log(this.translate.errors.simpleTapController.initError, error);
+    }
+  }
+  function _animationOut2(className, callback) {
+    var _this9 = this;
+    if (this.isAnimating) {
+      return;
+    }
+    var modalImg = this.modalElements.imageContainer.html;
+    modalImg.classList.add(className);
+    this.isAnimating = true;
+    var removeCallback = function removeCallback() {
+      modalImg.classList.remove(className);
+      _this9.isAnimating = false;
+      modalImg.removeEventListener("animationend", removeCallback);
+      callback();
+    };
+    modalImg.addEventListener("animationend", removeCallback);
+  }
+  function _update2(a) {
+    var _this10 = this;
+    _classPrivateMethodGet(this, _updateImg, _updateImg2).call(this);
+    if (a) {
+      _classPrivateMethodGet(this, _animationOut, _animationOut2).call(this, a, function () {
+        _classPrivateMethodGet(_this10, _updateArrows, _updateArrows2).call(_this10);
+      });
+    } else _classPrivateMethodGet(this, _updateArrows, _updateArrows2).call(this);
+  }
+  function _createEl2() {
+    var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "div";
+    var element = document.createElement(type);
+    element.className = className;
+    return element;
+  }
+  function _removeChilds2(el) {
+    while (el.firstChild) {
+      el.removeChild(el.lastChild);
+    }
+  }
+  function _updateImg2() {
+    _classPrivateMethodGet(this, _putImg, _putImg2).call(this, _classPrivateMethodGet(this, _createImgEl, _createImgEl2).call(this, _classPrivateMethodGet(this, _getCurrentImg, _getCurrentImg2).call(this).src));
+  }
+  function _updateArrows2() {
+    var _classPrivateMethodGe = _classPrivateMethodGet(this, _getArrows, _getArrows2).call(this),
+      next = _classPrivateMethodGe.next,
+      prev = _classPrivateMethodGe.prev;
+    prev.style.opacity = "1";
+    next.style.opacity = "1";
+    if (this.nowId <= 0) {
+      prev.style.opacity = "0";
+    }
+    if (this.nowId >= this.images.length - 1) {
+      next.style.opacity = "0";
+    }
+  }
 
-  exports.SmartImgGallery = SmartImgGallery;
+  exports.SmartImageGallery = SmartImageGallery;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

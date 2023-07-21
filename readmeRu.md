@@ -23,9 +23,9 @@
    -  как ES модуль
     ```html
     <script type="module">
-    import {SmartImgGallery} from "./smartImageGallery.esm.js";
+    import {SmartImageGallery} from "./smartImageGallery.esm.js";
     const Settings = { ... }
-    const Gallery = new SmartImgGallery( Settings );
+    const Gallery = new SmartImageGallery( Settings );
     </script>
     ```
    - если по каким-то причинам вы не хотите использовать модули
@@ -33,7 +33,7 @@
     <script src="smartImageGallery.iife.js"></script>
     <script>
     const Settings = { ... }
-    const Gallery = new SIG.SmartImgGallery( Settings );
+    const Gallery = new SIG.SmartImageGallery( Settings );
     </script>
     ```
 4. Далее настраиваем галерею (объект **Settings**)
@@ -68,15 +68,15 @@
 
 ## События
 На document.body скрипт триггерет следующие события:
-- **smartGalleryOpen**:  при открытии окна
-- **smartGalleryClose**: при закрытии окна
+- **smartgalleryopen**:  при открытии окна
+- **smartgalleryclose**: при закрытии окна
 Пример использования:
 ```js
-document.body.addEventListener("smartGalleryOpen", () =>
+document.body.addEventListener("smartgalleryopen", () =>
     ...
 );
 
-document.body.addEventListener("smartGalleryClose", () =>
+document.body.addEventListener("smartgalleryclose", () =>
     ...
 );
 ```

@@ -1,26 +1,26 @@
-import { SimpleSwipeController } from "./simpleSwipe";
-import { LangRu } from "./lang/ru";
+import { LangEn } from "./lang/errors.js";
+import { SmartSwipeController } from "smart-swipe-controller";
 import style from "./style.css";
 /**
- * Создаёт галерею при клике на изображение. Изображения собираются по селлектору.
- * В стилях в самом начале есть все настройки отображения.
+ * Creates a gallery when an image is clicked. Images are collected by a selector.
+ * Styles have all the display settings at the very beginning. Settings can be changed before initialization.
  *
- * На document.body создаёт события:
- * - smartGalleryOpen:  при открытии окна
- * - smartGalleryClose: при закрытии окна
+ * SmartImageGallery adding additional events to document.body создаёт события:
+ * - smartgalleryopen:  when the gallery is opened
+ * - smartgalleryclose: when the gallery is closed
  */
-export class SmartImgGallery {
-    // селекторы
+export class SmartImageGallery {
+    // selectors
     rootSelector = "body, html";
     containerSelector;
     imagesSelector;
-    //классы и события
+    // CSS classes and events
     modalId = "dev-galery__screen";
     showClass = "dev-galery__screen_show";
     modalElements = {
         imageContainer: { class: "dev-galery__image", show: true },
         close: {
-            class: "dev-galery__close dev-galery__btn",
+            class: "dev-galery__close dev-galery__btn ",
             content: "✕",
             show: true,
             click: () => {
@@ -28,7 +28,7 @@ export class SmartImgGallery {
             },
         },
         prev: {
-            class: "dev-galery__prev dev-galery__btn",
+            class: "dev-galery__prev dev-galery__btn ",
             content: "◀",
             show: true,
             click: () => {
@@ -36,7 +36,7 @@ export class SmartImgGallery {
             },
         },
         next: {
-            class: "dev-galery__next dev-galery__btn",
+            class: "dev-galery__next dev-galery__btn ",
             content: "▶",
             show: true,
             click: () => {
@@ -44,7 +44,7 @@ export class SmartImgGallery {
             },
         },
         download: {
-            class: "dev-galery__download dev-galery__btn",
+            class: "dev-galery__download dev-galery__btn ",
             content: "▼",
             show: true,
             click: () => {
@@ -53,18 +53,18 @@ export class SmartImgGallery {
         },
     };
     events = {
-        name: { open: "smartGalleryOpen", close: "smartGalleryClose" },
+        name: { open: "smartgalleryopen", close: "smartgalleryclose" },
         html: document.body,
     };
 
     /**
-     * @param settings - настройки галереи
-     * @param {string} [settings.containerSelector="body"] - селектор места под модальное окно
-     * @param {string} [settings.imagesSelector="img"] - селектор для сбора изображений
-     * @param {boolean} [settings.showDownloadButton=false] - отображение кнопки загрузки
-     * @param {boolean} [settings.displayCopies=true] - отображать ли копии в галереи (проверка по совпадению пути)
-     * @param {number} [settings.animationDuration=0.3] - длительность анимации перехода изображений
-     * @param {boolean} [settings.init=true] - проводить инициализацию сразу после создания экземпляра (можно будет вызвать метод .init() )
+     * @param settings - gallery settings
+     * @param {string} [settings.containerSelector="body"] - selector for modal window
+     * @param {string} [settings.imagesSelector="img"] - find images selector
+     * @param {boolean} [settings.showDownloadButton=false] - show download button
+     * @param {boolean} [settings.displayCopies=true] - display copies of pictures or not (defines copies or not by img src)
+     * @param {number} [settings.animationDuration=0.3] - animation duration
+     * @param {boolean} [settings.init=true] - init after create (then you can call method .init() )
      */
     constructor({
         containerSelector = "body",
@@ -74,7 +74,7 @@ export class SmartImgGallery {
         init = true,
         animationDuration = 0.3,
     }) {
-        this.translate = LangRu;
+        this.translate = LangEn;
         this.containerSelector = containerSelector;
         this.imagesSelector = imagesSelector;
         this.displayCopies = displayCopies;
@@ -83,8 +83,8 @@ export class SmartImgGallery {
         if (init) this.init();
     }
     /**
-     * Подготовка галереи к работе.
-     * Устанавливает события клика на изображения, сохраняет место размещения, удаляет копии (если нужно)
+     * Initialize gallery
+     * Sets click events on images, takes all HTML elements by selector, deletes copies, etc
      * @returns {boolean}
      */
     init() {
@@ -104,11 +104,11 @@ export class SmartImgGallery {
                 return;
             }
             let filеrRejected = {};
-            if (!this.displayCopies) filеrRejected = this.filterCopies();
+            if (!this.displayCopies) filеrRejected = this.#filterCopies();
 
             this.images.forEach((img, i) => {
                 const addEL = (el) =>
-                    el.addEventListener("click", () => this.show(i));
+                    el.addEventListener("click", () => this.#show(i));
 
                 if (filеrRejected[img.src]) {
                     filеrRejected[img.src].forEach((img) => addEL(img));
@@ -123,7 +123,7 @@ export class SmartImgGallery {
         }
     }
 
-    filterCopies() {
+    #filterCopies() {
         let srcs = {},
             imgs = {};
         this.images = this.images.filter((img) => {
@@ -139,36 +139,36 @@ export class SmartImgGallery {
         return imgs;
     }
 
-    show(id) {
+    #show(id) {
         this.nowId = id;
 
-        let bg = this.createBackground();
+        let bg = this.#createBackground();
         this.bgContainer = bg;
         this.container.append(bg);
 
-        this.animation(true);
+        this.#animation(true);
 
-        this.createElements(bg);
+        this.#createElements(bg);
 
         this.modalElements.imageContainer.html.style.animationDuration =
             this.animationDuration;
 
-        this.addButtonsEvents();
+        this.#addButtonsEvents();
 
-        this.updateImg();
+        this.#updateImg();
 
-        this.updateArrows();
+        this.#updateArrows();
 
         this.startKeyControl();
 
-        this.dispatchEvents("open");
+        this.#dispatchEvents("open");
     }
 
-    dispatchEvents(eventName) {
+    #dispatchEvents(eventName) {
         this.events.html.dispatchEvent(new Event(this.events.name[eventName]));
     }
 
-    keyControlCallback = (e) => {
+    #keyControlCallback = (e) => {
         switch (e.keyCode) {
             case 39:
                 this.next();
@@ -184,7 +184,7 @@ export class SmartImgGallery {
         }
     };
 
-    animation(a, callback) {
+    #animation(a, callback) {
         if (a) {
             setTimeout(() => {
                 this.bgContainer.classList["add"](this.showClass);
@@ -200,31 +200,35 @@ export class SmartImgGallery {
             );
         }
     }
-
+    /**
+     * Add key control
+     */
     startKeyControl() {
-        document.body.addEventListener("keydown", this.keyControlCallback);
+        document.body.addEventListener("keydown", this.#keyControlCallback);
     }
-
+    /**
+     * Remove key control
+     */
     stopKeyControl() {
-        document.body.removeEventListener("keydown", this.keyControlCallback);
+        document.body.removeEventListener("keydown", this.#keyControlCallback);
     }
 
-    getArrows() {
+    #getArrows() {
         return {
             next: this.modalElements.next.html,
             prev: this.modalElements.prev.html,
         };
     }
-    getCurrentImg() {
+    #getCurrentImg() {
         return this.images[this.nowId];
     }
 
-    createElements(destination) {
+    #createElements(destination) {
         for (const key in this.modalElements) {
             if (Object.hasOwnProperty.call(this.modalElements, key)) {
                 const element = this.modalElements[key];
                 if (!element.show) continue;
-                element.html = this.createEl(element.class);
+                element.html = this.#createEl(element.class);
                 if (element.content !== undefined) {
                     element.html.appendChild(
                         document.createTextNode(element.content)
@@ -235,32 +239,32 @@ export class SmartImgGallery {
         }
     }
 
-    createBackground() {
-        const bg = this.createEl();
+    #createBackground() {
+        const bg = this.#createEl();
         bg.id = this.modalId;
         this.modal = bg;
         return bg;
     }
 
-    createImgEl(src) {
-        const img = this.createEl("", "img");
+    #createImgEl(src) {
+        const img = this.#createEl("", "img");
         img.src = src;
         return img;
     }
 
-    putImg(img) {
+    #putImg(img) {
         img.addEventListener("click", (e) => {
             e.stopPropagation();
             e.cancelBubble = true;
         });
 
-        this.addSwipe(img);
+        this.#addSwipe(img);
 
         let html = this.modalElements.imageContainer.html;
-        this.removeChilds(html);
+        this.#removeChilds(html);
         html.appendChild(img);
     }
-    addButtonsEvents() {
+    #addButtonsEvents() {
         let self = this;
         let closeEvent = function (e) {
             self.hide();
@@ -280,19 +284,19 @@ export class SmartImgGallery {
         }
     }
 
-    addSwipe(el) {
-        if (typeof SimpleSwipeController === undefined) {
+    #addSwipe(el) {
+        if (typeof SmartSwipeController === undefined) {
             console.log(this.translate.errors.simpleTapController.notFound);
             return;
         }
         try {
-            new SimpleSwipeController(el, 2)
-                .addEventListener("swipeLeft", () => {
-                    this.next();
-                })
-                .addEventListener("swipeRight", () => {
-                    this.prev();
-                });
+            new SmartSwipeController(el, 2);
+            el.addEventListener("swipeleft", () => {
+                this.next();
+            });
+            el.addEventListener("swiperight", () => {
+                this.prev();
+            });
         } catch (error) {
             console.log(
                 this.translate.errors.simpleTapController.initError,
@@ -300,10 +304,12 @@ export class SmartImgGallery {
             );
         }
     }
-
-    downloadCurrent(e) {
+    /**
+     * Start download event for current img
+     */
+    downloadCurrent() {
         const a = document.createElement("a");
-        let url = this.getCurrentImg().src;
+        let url = this.#getCurrentImg().src;
         a.href = url;
         a.download = url.split("/").pop();
         document.body.appendChild(a);
@@ -311,52 +317,47 @@ export class SmartImgGallery {
         document.body.removeChild(a);
     }
 
-    updateArrows() {
-        let { next, prev } = this.getArrows();
-
-        prev.style.opacity = "1";
-        next.style.opacity = "1";
-
-        if (this.nowId <= 0) {
-            prev.style.opacity = "0";
-        }
-        if (this.nowId >= this.images.length - 1) {
-            next.style.opacity = "0";
-        }
-    }
-
-    updateImg() {
-        this.putImg(this.createImgEl(this.getCurrentImg().src));
-    }
-
+    /**
+     * Hide modal
+     */
     hide() {
-        this.animation(false, () => {
+        this.#animation(false, () => {
             this.root.style.overflow = "auto";
             this.modal.remove();
             this.stopKeyControl();
-            this.dispatchEvents("close");
+            this.#dispatchEvents("close");
         });
     }
-
+    /**
+     * Show prev img if can
+     * @returns {Boolead} - is go prew?
+     */
     prev() {
-        if (this.nowId <= 0 || this.prevAStarted) return;
+        if (this.nowId <= 0 || this.prevAStarted) return false;
 
-        this.animationOut("dev-galery-fade-right", () => {
+        this.#animationOut("dev-galery-fade-right", () => {
             this.nowId--;
-            this.update("dev-galery-fade-in-left");
+            this.#update("dev-galery-fade-in-left");
         });
-    }
 
+        return true;
+    }
+    /**
+     * Show next Image if can
+     * @returns {Boolean}
+     */
     next() {
-        if (this.nowId >= this.images.length - 1) return;
+        if (this.nowId >= this.images.length - 1) return false;
 
-        this.animationOut("dev-galery-fade-left", () => {
+        this.#animationOut("dev-galery-fade-left", () => {
             this.nowId++;
-            this.update("dev-galery-fade-in-right");
+            this.#update("dev-galery-fade-in-right");
         });
+
+        return true;
     }
 
-    animationOut(className, callback) {
+    #animationOut(className, callback) {
         if (this.isAnimating) {
             return;
         }
@@ -373,24 +374,40 @@ export class SmartImgGallery {
         modalImg.addEventListener("animationend", removeCallback);
     }
 
-    update(a) {
-        this.updateImg();
+    #update(a) {
+        this.#updateImg();
         if (a) {
-            this.animationOut(a, () => {
-                this.updateArrows();
+            this.#animationOut(a, () => {
+                this.#updateArrows();
             });
-        } else this.updateArrows();
+        } else this.#updateArrows();
     }
 
-    createEl(className = "", type = "div") {
+    #createEl(className = "", type = "div") {
         let element = document.createElement(type);
         element.className = className;
         return element;
     }
 
-    removeChilds(el) {
+    #removeChilds(el) {
         while (el.firstChild) {
             el.removeChild(el.lastChild);
+        }
+    }
+    #updateImg() {
+        this.#putImg(this.#createImgEl(this.#getCurrentImg().src));
+    }
+    #updateArrows() {
+        let { next, prev } = this.#getArrows();
+
+        prev.style.opacity = "1";
+        next.style.opacity = "1";
+
+        if (this.nowId <= 0) {
+            prev.style.opacity = "0";
+        }
+        if (this.nowId >= this.images.length - 1) {
+            next.style.opacity = "0";
         }
     }
 }
