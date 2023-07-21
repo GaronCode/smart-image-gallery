@@ -1,6 +1,6 @@
 {
   "name": "smart-image-gallery",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Shows on click found by selector images in the pop-up window",
   "main": "dist/smartImageGallery.cjs.js",
   "module": "dist/smartImageGallery.esm.js",
@@ -28,15 +28,15 @@
   "devDependencies": {
     "@babel/core": "^7.22.8",
     "@babel/preset-env": "^7.22.7",
+    "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-styles": "^4.0.0"
+    "rollup-plugin-styles": "^4.0.0",
   },
   "dependencies": {
-    "@rollup/plugin-terser": "^0.4.3",
     "smart-swipe-controller": "^0.1.3"
   }
 }
