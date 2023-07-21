@@ -1,5 +1,6 @@
 # Smart Image Gallery
-
+Creates a pop-up gallery when an image is clicked. Images are collected by a selector.
+## [Live preview](https://garoncode.github.io/smart-image-gallery/)
 ## Usage
 1. place images on the page in any way. You need to make sure that there is a unique CSS selector to search them
    
@@ -53,7 +54,11 @@
     ```
     If there was no initialization during creation, you need to use the method `init` (`Gallery.init()`)
 
-5. If you
+5. If you want change styles, you can change classes before init
+    ```js
+    const Gallery = new SmartImageGallery({ init: false });
+    Gallery
+    ```
 6. Done. When you click on the image, a window should appear.
 
 

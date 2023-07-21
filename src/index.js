@@ -5,7 +5,7 @@ import style from "./style.css";
  * Creates a gallery when an image is clicked. Images are collected by a selector.
  * Styles have all the display settings at the very beginning. Settings can be changed before initialization.
  *
- * SmartImageGallery adding additional events to document.body создаёт события:
+ * SmartImageGallery adding additional events to document.body:
  * - smartgalleryopen:  when the gallery is opened
  * - smartgalleryclose: when the gallery is closed
  */
