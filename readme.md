@@ -50,15 +50,27 @@ Creates a pop-up gallery when an image is clicked. Images are collected by a sel
         // flag for initializing all handlers and events at once when creating
         init: true,
     }
+    // if you use iife import
+    // const Gallery = new SIG.SmartImageGallery( Settings );
     const Gallery = new SmartImageGallery( Settings );
     ```
     If there was no initialization during creation, you need to use the method `init` (`Gallery.init()`)
 
 5. If you want change styles, you can change classes before init
     ```js
-    const Gallery = new SmartImageGallery({ init: false });
-    Gallery
+    const Gallery = new SmartImageGallery({ init: false, showDownloadButton: true });
+
+    const {imageContainer, download} = Gallery.modalElements
+    imageContainer.class += " my-addition-class-name"; // addition class for image container (add space before class name)
+    download.class = "my-new-class-name"; // new class for download button
+
+    Gallery.init();
     ```
+    it has several modal blocks:
+        - _imageContainer_: image container div
+        - _prev_: previous image button
+        - _next_: next image button
+        - _download_: download image button
 6. Done. When you click on the image, a window should appear.
 
 
