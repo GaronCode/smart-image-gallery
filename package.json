@@ -8,7 +8,8 @@
   "iife": "dist/smartImageGallery.iife.js",
   "iifeMin": "dist/smartImageGallery.iife.mini.js",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "push": "git push -f gh master"
   },
   "keywords": [
     "images",

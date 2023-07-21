@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <main>
+            <h1>Smart Image Gallery</h1>
+            <div class="container">
+                <img src="imgs/001.jpg" alt="" /><img
+                    src="imgs/001.jpg"
+                    alt=""
+                /><img src="imgs/001.jpg" alt="" /><img
+                    src="imgs/002.jpg"
+                    alt=""
+                /><img src="imgs/003.jpg" alt="" /><img
+                    src="imgs/004.jpg"
+                    alt=""
+                /><img src="imgs/005.webp" alt="" /><img
+                    src="imgs/006.jpg"
+                    alt=""
+                /><img src="imgs/007.jpg" alt="" />
+            </div>
+        </main>
+
+        <script type="module">
+            import { SmartImageGallery } from "./smartImageGallery.esm.js";
+
+            window.addEventListener("load", () => {
+                new SmartImageGallery({
+                    containerSelector: "body",
+                    imagesSelector: ".container img",
+                    showDownloadButton: true,
+                    displayCopies: false,
+                    animationDuration: 0.4,
+                });
+            });
+
+            document.body.addEventListener("smartgalleryopen", () =>
+                console.log("opened")
+            );
+            document.body.addEventListener("smartgalleryclose", () =>
+                console.log("closed")
+            );
+        </script>
+    </body>
+</html>
